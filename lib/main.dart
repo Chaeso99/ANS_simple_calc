@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_practice/clac_input.dart';
 
-void main()
-{
-  runApp(MyApp());
+void main() {
+  runApp(
+    MultiProvider(
+      providers:[
+       ChangeNotifierProvider(create: (context) => ValueController()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,7 +19,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home:Calc(),
     );
@@ -19,10 +27,12 @@ class MyApp extends StatelessWidget {
 }
 
 class Calc extends StatelessWidget {
-  const Calc({Key? key}) : super(key: key);
+   Calc({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final valueController = context.watch<ValueController>();
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -58,7 +68,7 @@ class Calc extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20, bottom: 40),
               child: Padding(
                 padding: const EdgeInsets.only(top: 25),
-                child: Text("0", style: TextStyle(fontSize: 50),),
+                child: Text("${valueController.val}", style: TextStyle(fontSize: 50),),
               ),
             )),
             Container(
@@ -103,15 +113,20 @@ class Calc extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 5),
                       child: Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: CupertinoColors.systemGrey4,
-                              child:Text("%", style: TextStyle(fontSize: 50),),
+                          InkWell(
+                            onTap: () {
+                              valueController.changeValueStat("remain");
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                color: CupertinoColors.systemGrey4,
+                                child:Text("%", style: TextStyle(fontSize: 50),),
+                              ),
                             ),
                           ),
                           Spacer(),
@@ -127,195 +142,269 @@ class Calc extends StatelessWidget {
                             ),
                           ),
                           Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: CupertinoColors.systemGrey4,
-                              child:Text("C", style: TextStyle(fontSize: 42),),
-                            ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                                color: CupertinoColors.systemGrey4,
-                              child:Icon(Icons.backspace, size: 30,)
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("7", style: TextStyle(fontSize: 42),),
-                            ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("8", style: TextStyle(fontSize: 42),),
-                            ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("9", style: TextStyle(fontSize: 42),),
-                            ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Container(
+                          InkWell(
+                            onTap: () {
+                              valueController.changeValueStat("C");
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Container(
                                 alignment: Alignment.center,
                                 width: 180,
                                 height: 100,
                                 padding: EdgeInsets.all(5.0),
-                              color: CupertinoColors.systemGrey4,
-                                child:Text("X", style: TextStyle(fontSize: 42),),
+                                color: CupertinoColors.systemGrey4,
+                                child:Text("C", style: TextStyle(fontSize: 42),),
+                              ),
+                            ),
+                          ),
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              valueController.changeValueStat("backspace");
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                  color: CupertinoColors.systemGrey4,
+                                child:Icon(Icons.backspace, size: 30,)
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("4", style: TextStyle(fontSize: 42),),
+                    InkWell(
+                      onTap: () {
+                        valueController.changeValue(7);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                color: Colors.white,
+                                child:Text("7", style: TextStyle(fontSize: 42),),
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("5", style: TextStyle(fontSize: 42),),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                valueController.changeValue(8);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 180,
+                                  height: 100,
+                                  padding: EdgeInsets.all(5.0),
+                                  color: Colors.white,
+                                  child:Text("8", style: TextStyle(fontSize: 42),),
+                                ),
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("6", style: TextStyle(fontSize: 42),),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                valueController.changeValue(9);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 180,
+                                  height: 100,
+                                  padding: EdgeInsets.all(5.0),
+                                  color: Colors.white,
+                                  child:Text("9", style: TextStyle(fontSize: 42),),
+                                ),
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: CupertinoColors.systemGrey4,
-                              child:Text("ㅡ", style: TextStyle(fontSize: 42),),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                valueController.changeValueStat("multiply");
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    width: 180,
+                                    height: 100,
+                                    padding: EdgeInsets.all(5.0),
+                                  color: CupertinoColors.systemGrey4,
+                                    child:Text("X", style: TextStyle(fontSize: 42),),
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("1", style: TextStyle(fontSize: 42),),
+                    InkWell(
+                      onTap: () {
+                        valueController.changeValue(4);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                color: Colors.white,
+                                child:Text("4", style: TextStyle(fontSize: 42),),
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("2", style: TextStyle(fontSize: 42),),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                valueController.changeValue(5);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 180,
+                                  height: 100,
+                                  padding: EdgeInsets.all(5.0),
+                                  color: Colors.white,
+                                  child:Text("5", style: TextStyle(fontSize: 42),),
+                                ),
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("3", style: TextStyle(fontSize: 42),),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                valueController.changeValue(6);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 180,
+                                  height: 100,
+                                  padding: EdgeInsets.all(5.0),
+                                  color: Colors.white,
+                                  child:Text("6", style: TextStyle(fontSize: 42),),
+                                ),
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: CupertinoColors.systemGrey4,
-                              child:Text("+", style: TextStyle(fontSize: 42),),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                valueController.changeValueStat("minus");
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 180,
+                                  height: 100,
+                                  padding: EdgeInsets.all(5.0),
+                                  color: CupertinoColors.systemGrey4,
+                                  child:Text("ㅡ", style: TextStyle(fontSize: 42),),
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    InkWell(
+                      onTap: () {
+                        valueController.changeValue(1);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                color: Colors.white,
+                                child:Text("1", style: TextStyle(fontSize: 42),),
+                              ),
+                            ),
+                            Spacer(),
+                            InkWell(
+                              enableFeedback: true,
+                              hoverColor: Colors.lightBlue,
+                              onTap: () {
+                                valueController.changeValue(2);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 180,
+                                  height: 100,
+                                  padding: EdgeInsets.all(5.0),
+                                  color: Colors.white,
+                                  child:Text("2", style: TextStyle(fontSize: 42),),
+                                ),
+                              ),
+                            ),
+                            Spacer(),
+                            InkWell(
+                              enableFeedback: true,
+                              hoverColor: Colors.lightBlue,
+                              onTap: () {
+                                valueController.changeValue(3);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: 180,
+                                    height: 100,
+                                    padding: EdgeInsets.all(5.0),
+                                    color: Colors.white,
+                                    child:Text("3", style: TextStyle(fontSize: 42),),
+                                  ),
+                              ),
+                            ),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                valueController.changeValueStat("plus");
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 180,
+                                  height: 100,
+                                  padding: EdgeInsets.all(5.0),
+                                  color: CupertinoColors.systemGrey4,
+                                  child:Text("+", style: TextStyle(fontSize: 42),),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
 
@@ -323,27 +412,37 @@ class Calc extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 30, bottom: 5),
                       child: Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("/", style: TextStyle(fontSize: 42),),
+                          InkWell(
+                            onTap: () {
+                              valueController.changeValueStat("divide");
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                color: Colors.white,
+                                child:Text("/", style: TextStyle(fontSize: 42),),
+                              ),
                             ),
                           ),
                           Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text("0", style: TextStyle(fontSize: 42),),
+                          InkWell(
+                            onTap: () {
+                              valueController.changeValue(0);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                color: Colors.white,
+                                child:Text("0", style: TextStyle(fontSize: 42),),
+                              ),
                             ),
                           ),
                           Spacer(),
@@ -359,15 +458,20 @@ class Calc extends StatelessWidget {
                             ),
                           ),
                           Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.blueGrey,
-                              child:Text("=", style: TextStyle(fontSize: 42),),
+                          InkWell(
+                            onTap: () {
+                              valueController.changeValueStat("is");
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                color: Colors.blueGrey,
+                                child:Text("=", style: TextStyle(fontSize: 42),),
+                              ),
                             ),
                           ),
                         ],
