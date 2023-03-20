@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_practice/clac_input.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+launchMyURL() async {
+  var uri = Uri.parse("https://google.com");
+  String url = "https://naver.com";
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  }
+}
 
 void main() {
   runApp(
@@ -130,15 +139,18 @@ class Calc extends StatelessWidget {
                             ),
                           ),
                           Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: CupertinoColors.systemGrey4,
-                              child:Text("CE", style: TextStyle(fontSize: 42),),
+                          InkWell(
+                            onTap: (){launchMyURL();},
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                color: CupertinoColors.systemGrey4,
+                                child:Text("CE", style: TextStyle(fontSize: 42),),
+                              ),
                             ),
                           ),
                           Spacer(),
