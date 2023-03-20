@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_practice/clac_input.dart';
+//import 'package:simple_practice/clac_input.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:simple_practice/cip.dart';
 
 launchMyURL() async {
-  var uri = Uri.parse("https://google.com");
-  String url = "https://naver.com";
+  var uri = Uri.parse("https://www.youtube.com/");
+  //String url = "https://naver.com";
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);
   }
@@ -49,14 +50,14 @@ class Calc extends StatelessWidget {
             Padding(
                 padding: EdgeInsets.all(10.0),
               child: Row(
-                children: const[
-                  Padding(
+                children: [
+                  const Padding(
                     padding: EdgeInsets.only(left: 14.0),
                     child: Icon(Icons.menu,
                     size: 40.0,),
                   ),
                   // Spacer(),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(left: 20.0),
                     child: Text
                       ("표준",
@@ -65,8 +66,13 @@ class Calc extends StatelessWidget {
                     )
                     ),
                   ),
-                  Spacer(),
-                  Icon(Icons.history, size: 40.0,),
+                  const Spacer(),
+                  InkWell(
+                      onTap: () {
+                        valueController.changeValueStat("history");
+                      },
+                      child: Icon(Icons.history, size: 40.0,)
+                  ),
                 ],
               ),
             ),
@@ -77,7 +83,7 @@ class Calc extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20, bottom: 40),
               child: Padding(
                 padding: const EdgeInsets.only(top: 25),
-                child: Text("${valueController.val}", style: TextStyle(fontSize: 50),),
+                child: Text("${valueController.valStr}", style: TextStyle(fontSize: 50),),
               ),
             )),
             Container(
@@ -458,15 +464,20 @@ class Calc extends StatelessWidget {
                             ),
                           ),
                           Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 180,
-                              height: 100,
-                              padding: EdgeInsets.all(5.0),
-                              color: Colors.white,
-                              child:Text(".", style: TextStyle(fontSize: 42),),
+                          InkWell(
+                            onTap: () {
+                              valueController.changeValue(".");
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 100,
+                                padding: EdgeInsets.all(5.0),
+                                color: Colors.white,
+                                child:Text(".", style: TextStyle(fontSize: 42),),
+                              ),
                             ),
                           ),
                           Spacer(),

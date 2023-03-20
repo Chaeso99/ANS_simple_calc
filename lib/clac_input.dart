@@ -6,21 +6,21 @@ class ValueController with ChangeNotifier {
   //현재 곱하기 상태인지 더하기 상태인지 상태를 저장하는 함수 하나
   //누른 숫자를 넣는 함수 하나
 
-  int oldval = 0;
+  double oldval = 0;
   String stat = "";
 
-  int _val = 0;
+  double _val = 0;
   String valStr="";
-  int get val => _val;
+  String get val => _val.toString();
 
-  void changeValue(int value){
+  void changeValue(value){
     if(_val == 0) //값이 0이면 누른 값을 0대신 집어넣음
       {
         _val = value;
       }
     else //0 이외의 값이면 뒷자리에 누른 값을 붙임
       {
-        _val = int.parse(_val.toString()+value.toString());
+        _val = double.parse(_val.toString()+value.toString());
       }
 
     notifyListeners();
@@ -31,6 +31,22 @@ class ValueController with ChangeNotifier {
       {
         _val = 0;
       }
+
+    else if(value == "dot")
+      {
+        valStr =_val.toString();
+        valStr = valStr+".";
+        //print(valStr);
+        if(valStr.endsWith("."))
+          {
+            
+          }
+        else
+        {
+          _val = double.parse(valStr);
+        }
+      }
+
     else if(value == "backspace")
       {
         valStr = _val.toString();
@@ -41,7 +57,7 @@ class ValueController with ChangeNotifier {
         else{
           valStr = valStr.substring(0, valStr.length-1);
         }
-        _val = int.parse(valStr);
+        _val = double.parse(valStr);
       }
     else if(value == "plus")
       {
@@ -67,12 +83,11 @@ class ValueController with ChangeNotifier {
       _val = 0;
       stat = "divide";
     }
-    else if(value == "remain")
-      {
-        oldval = _val;
-        _val = 0;
-        stat = "remain";
-      }
+    else if(value == "remain") {
+      oldval = _val;
+      _val = 0;
+      stat = "remain";
+    }
 
     else if(value == "is")
       {
@@ -87,7 +102,7 @@ class ValueController with ChangeNotifier {
             _val = oldval*_val;
             break;
           case "divide":
-            _val = oldval~/_val;
+            _val = (oldval~/_val) as double;
             break;
           case "remain":
             _val = oldval%_val;
